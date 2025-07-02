@@ -1,0 +1,9 @@
+build/
+zmk/
+zephyr/
+modules/
+tools/
+.west/
+.vscode/
+.history/
+*.bak

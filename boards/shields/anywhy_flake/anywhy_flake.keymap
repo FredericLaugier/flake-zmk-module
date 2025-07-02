@@ -1,40 +1,67 @@
+#include <behaviors/mouse_keys.dtsi>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#include "locale/keymap_fr.h"
+
+
+#define BASE 0
+#define ALTGRD 1
+#define LAFAYETTE 2
+#define NAVI 3
+#define FONCTIONS 4
+#define BT_OUT_SYS 5
+
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1200  // 600
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 200    // 10
+#include <dt-bindings/zmk/pointing.h>
+
+#define HM_TAPPING_TERM 200
 
 / {
+    // Activate BT_OUT_SYS layer by pressing ALTGRD and FONCTIONS
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        adajust_layer {
+            if-layers = <FONCTIONS ALTGRD>;
+            then-layer = <BT_OUT_SYS>;
+        };
+    };
+
     combos {
         compatible = "zmk,combos";
 
         bt_sel_3 {
             bindings = <&bt3>;
             key-positions = <42 30>;
-            layers = <2>;
+            layers = <FONCTIONS>;
         };
 
         bt_sel_4 {
             bindings = <&bt4>;
             key-positions = <30 18>;
-            layers = <2>;
+            layers = <FONCTIONS>;
         };
 
-        enter_gaming {
-            bindings = <&sl 3>;
-            key-positions = <26 15 28>;
-            layers = <2>;
-        };
-
-        leave_gaming {
-            bindings = <&sl 0>;
-            key-positions = <31 20 33>;
-            layers = <4>;
-        };
-
-        grave {
-            bindings = <&kp GRAVE>;
-            key-positions = <13 25>;
-            layers = <3>;
-        };
+//        enter_gaming {
+//            bindings = <&sl 3>;
+//            key-positions = <26 15 28>;
+//            layers = <FONCTIONS>;
+//        };
+//
+//        leave_gaming {
+//            bindings = <&sl 0>;
+//            key-positions = <31 20 33>;
+//            layers = <GAMINGNUM>;
+//        };
+//
+//        grave {
+//            bindings = <&kp GRAVE>;
+//            key-positions = <13 25>;
+//            layers = <GAMING>;
+//        };
     };
 
     macros {
@@ -119,59 +146,375 @@
             #binding-cells = <0>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
+
+
+        mmv {
+            acceleration-exponent = <1>;      // 1
+            time-to-max-speed-ms = <900>;     // 40
+            delay-ms = <0>;                   // 0
+        };
+
+        msc {
+            acceleration-exponent = <1>;      // 0
+            time-to-max-speed-ms = <400>;     // 500
+            delay-ms = <0>;                   // 10
+        };
+
+        // tdLCTRL: tap_dance_left_ctrl {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     // bindings = <&mt LCTRL BACKSPACE>, <&to MOUSENAVI>;
+        //     bindings = <&mt LCTRL ENTER>, <&to MOUSENAVI>;
+        // };
+
+        // tdRCTRL: tap_dance_right_ctrl {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&mt RCTRL ENTER>, <&to MOUSENAVI>;
+        // };
+
+        tdA: tap_dance_a_grave {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_A>, <&kp FR_A_GRAVE>;
+        };
+        // tdC: tap_dance_ctrl_c {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&kp FR_C>, <&kp LC(FR_C)>;
+        // };
+        tdD: tap_dance_dollar {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_D>, <&kp FR_DOLLAR>;
+        };
+        tdE: tap_dance_e_aigu_grave {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_E>, <&kp FR_E_ACUTE>, <&kp FR_E_GRAVE>;
+        };
+        tdG: tap_dance_g {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&mt LSHIFT FR_G>, <&kp FR_EQUAL>;
+        };
+        tdI: tap_dance_squote {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_I>, <&kp FR_SQUOT>;
+        };
+        tdK: tap_dance_ctrl_slash {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_K>, <&kp LC(FR_SLASH)>;
+        };
+        tdO: tap_dance_dquote {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_O>, <&kp FR_DQUOT>;
+        };
+        tdQ: tap_dance_slash {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_Q>, <&kp FR_SLASH>;
+        };
+        // tdS: tap_dance_slash {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&kp FR_S>, <&kp FR_SLASH>;
+        // };
+        tdU: tap_dance_u_grave {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_U>, <&kp FR_U_GRAVE>;
+        };
+        // tdV: tap_dance_ctrl_v {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&kp FR_V>, <&kp LC(FR_V)>;
+        // };
+        // tdX: tap_dance_ctrl_x {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&kp FR_X>, <&kp LC(FR_X)>;
+        // };
+        // tdZ: tap_dance_z_slash {
+        //     compatible = "zmk,behavior-tap-dance";
+        //     #binding-cells = <0>;
+        //     tapping-term-ms = <HM_TAPPING_TERM>;
+        //     bindings = <&kp FR_Z>, <&kp FR_SLASH>;
+        // };
+
+        tdCommaSemmi: tap_dance_comma_semi {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_COMMA>, <&kp FR_SEMICOLON>;
+        };
+        tdDotCol: tap_dance_dot_col {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_DOT>, <&kp FR_COLON>;
+        };
+        tdExclQuest: tap_dance_excl_quest {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&kp FR_EXCL>, <&kp FR_QUESTION>;
+        };
+        tdFn: tap_dance_function {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <HM_TAPPING_TERM>;
+            bindings = <&mo FONCTIONS>, <&sl FONCTIONS>;
+        };
+
+        comma_semi: my_comma_semi {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            // bindings = <&kp FR_COMMA>, <&kp FR_SEMICOLON>;
+            bindings = <&tdCommaSemmi>, <&kp FR_SEMICOLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        dot_col: my_dot_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            // bindings = <&kp FR_DOT>, <&kp FR_COLON>;
+            bindings = <&tdDotCol>, <&kp FR_COLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        excl_quest: my_excl_quest {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            // bindings = <&kp FR_EXCL>, <&kp FR_QUESTION>;
+            bindings = <&tdExclQuest>, <&kp FR_QUESTION>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <150>;
+            quick-tap-ms = <0>;
+            // flavor = "tap-preferred";
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+        };
+
+        macros {
+
+            a_circumflex: a_circumflex{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_CIRC &kp FR_A>;
+            };
+            e_circumflex: e_circumflex{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_CIRC &kp FR_E>;
+            };
+            i_circumflex: i_circumflex{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_CIRC &kp FR_I>;
+            };
+            o_circumflex: o_circumflex{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_CIRC &kp FR_O>;
+            };
+            u_circumflex: u_circumflex{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_CIRC &kp FR_U>;
+            };
+
+            a_diaeresis: a_diaeresis{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_UMLAUT &kp FR_A>;
+            };
+            e_diaeresis: e_diaeresis{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_UMLAUT &kp FR_E>;
+            };
+            i_diaeresis: i_diaeresis{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_UMLAUT &kp FR_I>;
+            };
+            o_diaeresis: o_diaeresis{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_UMLAUT &kp FR_O>;
+            };
+            u_diaeresis: u_diaeresis{
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings = <&kp FR_UMLAUT &kp FR_U>;
+            };
+
+            a_e: a_e {
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings
+                    = <&macro_press   &kp LCTRL &kp LSHIFT>
+                    , <&macro_tap     &kp U>
+                    , <&macro_release &kp LCTRL &kp LSHIFT>
+                    // , <&macro_tap     &kp N0 &kp N0 &kp E &kp N6>
+                    , <&macro_tap     &kp FR_0 &kp FR_0 &kp E &kp FR_6 &kp ENTER>
+                    ;
+            };
+
+            o_e: o_e {
+                compatible = "zmk,behavior-macro";
+                #binding-cells = <0>;
+                wait-ms = <30>;
+                tap-ms = <40>;
+                bindings
+                    = <&macro_press   &kp LCTRL &kp LSHIFT>
+                    , <&macro_tap     &kp U>
+                    , <&macro_release &kp LCTRL &kp LSHIFT>
+                    // , <&macro_tap     &kp N0 &kp N1 &kp N5 &kp N3>
+                    , <&macro_tap     &kp FR_0 &kp FR_1 &kp FR_5 &kp FR_3 &kp ENTER>
+                    ;
+            };
+
+        };
+
     };
 
     keymap {
         compatible = "zmk,keymap";
 
+//  1        2             3             4                  5              6                7               8              9               10                     11            12
+// 13       14            15            16                 17             18               19              20             21               22                     23            24
+// 25       26            27            28                 29             30               31              32             33               34                     35            36
+// 37       38            39            40                 41             42               43              44             45               46                     47            48
+//          49            50            51                 52             53               54              55             56               57                     58
+
+
         base {
             bindings = <
-&kp ESC    &kp N1    &kp N2    &kp N3     &kp N4     &kp N5    &kp N6  &kp N7     &kp N8     &kp N9    &kp N0     &kp MINUS
-&kp ENTER  &kp Q     &kp W     &kp E      &kp R      &kp T     &kp Y   &kp U      &kp I      &kp O     &kp P      &kp BSPC
-&kp TAB    &kp A     &kp S     &kp D      &kp F      &kp G     &kp H   &kp J      &kp K      &kp L     &kp SEMI   &kp APOS
-&kp LBKT   &kp Z     &kp X     &kp C      &kp V      &kp B     &kp N   &kp M      &kp COMMA  &kp DOT   &kp FSLH   &kp RBKT
-           &kp LGUI  &kp LALT  &kp LCTRL  &kp SPACE  &mo 1     &mo 2   &kp LSHFT  &kp LGUI   &kp LALT  &kp LCTRL
+                &kp ESC    &kp FR_1         &kp FR_2         &kp FR_3           &kp FR_4         &kp FR_5         &kp FR_6        &kp FR_7       &kp FR_8          &kp FR_9              &kp FR_0      &kp MINUS
+                &kp ENTER  &tdA             &kp FR_Z         &tdE               &kp FR_R         &kp FR_T         &kp FR_Y        &tdU           &tdI              &tdO                  &kp FR_P      &kp BSPC
+                &kp TAB    &tdQ             &kp FR_S         &tdD               &kp FR_F         &tdG             &mt RSHIFT FR_H &kp FR_J       &tdK              &kp FR_L              &kp FR_M      &kp APOS
+                &kp LBKT   &kp FR_W         &kp FR_X         &kp FR_C           &kp FR_V         &kp FR_B         &kp FR_N        &comma_semi    &dot_col          &excl_quest           &sl LAFAYETTE &kp RBKT
+                           &mo FONCTIONS    &kp LEFT_GUI     &mt LALT BACKSPACE &lt NAVI SPACE   &mt LCTRL ENTER  &mt RCTRL ENTER &lt NAVI SPACE &lt ALTGRD DELETE &mt RIGHT_GUI K_CMENU &mo FONCTIONS
             >;
         };
 
-        num {
+        AltGround {
             bindings = <
-&none  &none     &none          &none      &none      &none       &none      &none   &none   &none   &none      &none
-&none  &kp ESC   &kp BACKSPACE  &kp TAB    &kp ENTER  &kp DEL     &kp GRAVE  &kp N7  &kp N8  &kp N9  &kp MINUS  &none
-&none  &kp LGUI  &kp LALT       &kp LCTRL  &kp LSHFT  &kp LBKT    &kp EQUAL  &kp N4  &kp N5  &kp N6  &kp N0     &none
-&none  &kp LEFT  &kp DOWN       &kp UP     &kp RIGHT  &kp RBKT    &kp SQT    &kp N1  &kp N2  &kp N3  &kp BSLH   &none
-       &trans    &trans         &trans     &trans     &none       &none      &trans  &trans  &trans  &trans
+                &none      &none            &none            &none              &none            &none            &none           &none            &none            &none            &none            &none
+                &none      &kp FR_AT        &kp FR_LT        &kp FR_GT          &kp FR_DOLLAR    &kp FR_PERCENT   &kp FR_PLUS     &kp FR_GRAVE     &kp FR_SQUOT     &kp FR_DQUOT     &kp FR_ASTERISK  &none
+                &none      &kp FR_LCBR      &kp FR_LPAR      &kp FR_RPAR        &kp FR_RCBR      &kp FR_EQUAL     &kp FR_MINUS    &kp FR_UNDER     &kp FR_BACKSLASH &kp FR_PIPE      &kp FR_SLASH     &none
+                &none      &kp FR_TILDE     &kp FR_LBKT      &kp FR_RBKT        &kp FR_CIRC      &kp FR_HASH      &kp FR_DEGRE    &kp FR_SEMICOLON &kp FR_COLON     &kp FR_AMPERSAND &kp FR_EURO      &none
+                           &trans           &trans           &trans             &trans           &trans           &trans          &trans           &trans           &trans           &trans
             >;
         };
 
-        fn {
+        Lafayette {
             bindings = <
-&none  &none    &none   &none   &none   &none             &none  &none       &none         &none         &none         &none
-&none  &kp F12  &kp F7  &kp F8  &kp F9  &soft_off         &bt2   &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP  &kp C_BRI_UP  &none
-&none  &kp F10  &kp F4  &kp F5  &kp F6  &kp CAPS          &bt1   &kp RSHFT   &kp RCTRL     &kp RALT      &kp RGUI      &none
-&none  &kp F11  &kp F1  &kp F2  &kp F3  &studio_unlock    &bt0   &kp C_PP    &kp C_PREV    &kp C_NEXT    &kp C_BRI_DN  &none
-       &trans   &trans  &trans  &trans  &none             &none  &trans      &trans        &trans        &trans
+                &none      &none            &none            &none              &none            &none            &none           &none            &none            &none            &none             &none
+                &none      &kp FR_A_GRAVE   &kp FR_E_ACUTE   &kp FR_E_GRAVE     &kp FR_EURO      &kp FR_UMLAUT    &kp FR_CIRC     &kp FR_U_GRAVE   &kp FR_UNDER     &kp FR_DQUOT     &kp FR_POUND_SIGN &none
+                &none      &a_circumflex    &kp FR_DOLLAR    &e_circumflex      &kp FR_AMPERSAND &kp FR_LPAR      &kp FR_RPAR     &u_circumflex    &i_circumflex    &o_circumflex    &kp FR_MICRO      &none
+                &none      &a_diaeresis     &a_e             &kp FR_C_CEDILLA   &e_diaeresis     &kp FR_HASH      &kp FR_DOT      &u_diaeresis     &i_diaeresis     &o_diaeresis     &o_e              &none
+                           &trans           &trans           &trans             &trans           &trans           &trans          &trans           &trans           &trans           &trans
             >;
         };
 
-        gaming {
+        Navigation {
             bindings = <
-&kp ESC    &kp N1     &kp N2  &kp N3  &kp N4     &kp N5    &kp N6  &kp N7     &kp N8     &kp N9    &kp N0     &kp MINUS
-&kp CAPS   &kp TAB    &kp Q   &kp W   &kp E      &kp R     &kp Y   &kp U      &kp I      &kp O     &kp P      &kp BSPC
-&kp ENTER  &kp LSHFT  &kp A   &kp S   &kp D      &kp F     &kp H   &kp J      &kp K      &kp L     &kp SEMI   &kp APOS
-&kp LBKT   &kp LCTRL  &kp Z   &kp X   &kp C      &kp V     &kp N   &kp M      &kp COMMA  &kp DOT   &kp FSLH   &kp RBKT
-           &kp T      &kp G   &kp B   &kp SPACE  &mo 4     &mo 2   &kp LSHFT  &kp LGUI   &kp LALT  &kp LCTRL
+                &none      &none            &none            &none              &none            &none            &none           &none            &none            &none            &none            &none
+                &none      &kp TAB          &kp HOME         &kp UP_ARROW       &kp END          &kp PAGE_UP      &kp FR_PLUS     &kp FR_7         &kp FR_8         &kp FR_9         &kp FR_ASTERISK  &none
+                &none      &kp CAPS         &kp LEFT_ARROW   &kp DOWN_ARROW     &kp RIGHT_ARROW  &kp PAGE_DOWN    &kp FR_MINUS    &kp FR_4         &kp FR_5         &kp FR_6         &kp FR_SLASH     &none
+                &none      &kp ESC          &mkp LCLK        &mmv MOVE_UP       &mkp RCLK        &tog NAVI        &kp FR_0        &kp FR_1         &kp FR_2         &kp FR_3         &kp FR_DOT       &none
+                           &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_RIGHT    &trans           &kp LCTRL        &kp RCTRL       &trans           &trans           &trans           &trans
             >;
         };
 
-        gaming_num {
+        Fonctions {
             bindings = <
-&trans  &trans   &trans    &trans    &trans     &trans     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp ESC  &kp BSPC  &kp CAPS  &kp ENTER  &kp DEL    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp N1   &kp N2    &kp N3    &kp N4     &kp N5     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp N6   &kp N7    &kp N8    &kp N9     &kp N0     &trans  &trans  &trans  &trans  &trans  &trans
-        &trans   &trans    &trans    &trans     &trans     &trans  &trans  &trans  &trans  &trans
+                &none      &none            &none            &none              &none            &none            &none           &none            &none           &none            &none            &none
+                &none      &none            &kp C_VOL_DN     &kp C_MUTE         &kp C_VOL_UP     &kp LC(HOME)     &kp F12         &kp F7           &kp F8          &kp F9           &kp PRINTSCREEN  &none
+                &none      &kp C_RECORD     &kp C_PREV       &kp C_PLAY_PAUSE   &kp C_NEXT       &kp LC(END)      &kp F11         &kp F4           &kp F5          &kp F6           &none            &none
+                &none      &kp ESC          &kp C_BRI_DN     &none              &kp C_BRI_UP     &to BASE         &kp F10         &kp F1           &kp F2          &kp F3           &kp ESC          &none
+                           &trans           &trans           &trans             &trans           &trans           &trans          &trans           &trans          &trans           &trans
             >;
         };
+
+        // TODO: à compléter / le F n'est là que pour tester
+        BtOutSys {
+            bindings = <
+                &none      &none            &none            &none             &none             &none            &none          &none             &none           &none            &none           &none
+                &none      &none            &none            &none             &none             &none            &out OUT_BLE   &out OUT_USB      &none           &none            &bt BT_CLR_ALL  &none
+                &none      &soft_off        &studio_unlock   &none             &kp FR_F          &none            &none          &bt4              &none           &none            &bt BT_CLR      &none
+                &none      &none            &none            &none             &none             &to BASE         &bt0           &bt1              &bt2            &bt3             &none           &none
+                           &trans           &trans           &trans            &trans            &trans           &trans         &trans            &trans          &trans           &trans
+            >;
+        };
+
+/*
+            gaming {
+                bindings = <
+    &kp ESC    &kp FR_1    &kp FR_2       &kp FR_3    &kp FR_4     &kp FR_5       &kp FR_6      &kp FR_7    &kp FR_8     &kp FR_9       &kp FR_0     &kp MINUS
+    &kp CAPS   &kp TAB     &kp Q          &kp W       &kp E        &kp R          &kp Y         &kp U       &kp I        &kp O          &kp P        &kp BSPC
+    &kp ENTER  &kp LSHFT   &kp A          &kp S       &kp D        &kp F          &kp H         &kp J       &kp K        &kp L          &kp SEMI     &kp APOS
+    &kp LBKT   &kp LCTRL   &kp Z          &kp X       &kp C        &kp V          &kp N         &kp M       &kp COMMA    &kp DOT        &kp FSLH     &kp RBKT
+            &kp T       &kp G          &kp B       &kp SPACE    &mo GAMINGNUM  &mo FONCTIONS &kp LSHFT   &kp LGUI     &kp LALT       &kp LCTRL
+                >;
+            };
+
+            gaming_num {
+                bindings = <
+    &trans     &trans      &trans         &trans      &trans      &trans         &trans         &trans     &trans        &trans         &trans       &trans
+    &trans     &kp ESC     &kp BSPC       &kp CAPS    &kp ENTER   &kp DEL        &trans         &trans     &trans        &trans         &trans       &trans
+    &trans     &kp FR_1    &kp FR_2       &kp FR_3    &kp FR_4    &kp FR_5       &trans         &trans     &trans        &trans         &trans       &trans
+    &trans     &kp FR_6    &kp FR_7       &kp FR_8    &kp FR_9    &kp FR_0       &trans         &trans     &trans        &trans         &trans       &trans
+            &trans      &trans         &trans      &trans      &trans         &trans         &trans     &trans        &trans         &trans
+                >;
+            };
+*/
+
     };
 };
